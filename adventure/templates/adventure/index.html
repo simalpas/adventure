@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <title>Welcome to Heidi's Adventure Game!</title>
+  </head>
+  <body>
+    <h1>Welcome to Heidi's Adventure Game</h1>
+  {% for eachRoom in room %}
+
+<p>
+  {{ eachRoom.description}}
+</p>
+{% endfor %}
+  </body>
+</html>

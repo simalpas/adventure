@@ -18,29 +18,38 @@ class Object(models.Model):
 class Room(Object):
     # A location with a exits to the north, south, east, west, up and down directions
     north = models.ForeignKey('self',
-                              on_delete=models.SET_NULL,
-                              null=True,
-                              related_name='goNorth')
+                            on_delete=models.SET_NULL,
+                            null=True,
+                            blank=True,
+                            related_name='goNorth')
     south = models.ForeignKey('self',
-                              on_delete=models.SET_NULL,
-                              null=True,
-                              related_name='goSouth')
+                            on_delete=models.SET_NULL,
+                            null=True,
+                            blank=True,
+                            related_name='goSouth')
     east = models.ForeignKey('self',
-                             on_delete=models.SET_NULL,
-                             null=True,
-                             related_name='goEast')
+                            on_delete=models.SET_NULL,
+                            null=True,
+                            blank=True,
+                            related_name='goEast')
     west = models.ForeignKey('self',
-                             on_delete=models.SET_NULL,
-                             null=True,
-                             related_name='goWest')
+                            on_delete=models.SET_NULL,
+                            null=True,
+                            blank=True,
+                            related_name='goWest')
     up = models.ForeignKey('self',
-                           on_delete=models.SET_NULL,
-                           null=True,
-                           related_name='goUp')
+                            on_delete=models.SET_NULL,
+                            null=True,
+                            blank=True,
+                            related_name='goUp')
     down = models.ForeignKey('self',
-                             on_delete=models.SET_NULL,
-                             null=True,
-                             related_name='goDown')
+                            on_delete=models.SET_NULL,
+                            null=True,
+                            blank=True,
+                            related_name='goDown')
+
+    def __str__(self):
+        return self.name
 
 
 class Item(Object):
@@ -56,6 +65,13 @@ class Item(Object):
     ]
     size = models.CharField(max_length=2, choices=SIZE_CHOICES, default='sm')
 
+    def pickUp(self, person):
+        self.heldBy = person
+        self.save()
+
+    def __str__(self):
+        return self.name
+
 
 class Person(models.Model):
     uuid = models.UUIDField(
@@ -70,3 +86,10 @@ class Person(models.Model):
         null=False,
     )
     location = models.ForeignKey('Room', on_delete=models.SET_NULL, null=True)
+
+    def move(self, loc):
+        self.location = loc
+        self.save()
+
+    def __str__(self):
+        return self.name
